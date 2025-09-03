@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+}
+
+/// ----------------------------
+/// USERS & AUTH
+/// ----------------------------
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  name          String
+  password      String
+  role          Role?         @default(CUSTOMER)
+  isApproved    Boolean       @default(false)
+  twoFactorCode String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  sellerProfile   SellerProfile?
+  customerProfile CustomerProfile?
+  roles           UserRole[]
+  orders          Order[]
+  wishlists       Wishlist[]
+  carts           Cart[]
+}
+
+enum Role {
+  ADMIN
+  SELLER
+  CUSTOMER
+}
+
+model RoleDefinition {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  users     UserRole[]
+  createdAt DateTime    @default(now())
+}
+
+model UserRole {
+  id       String         @id @default(uuid())
+  userId   String
+  roleId   String
+  user     User           @relation(fields: [userId], references: [id])
+  role     RoleDefinition @relation(fields: [roleId], references: [id])
+}
+
+/// ----------------------------
+/// SELLER & CUSTOMER PROFILES
+/// ----------------------------
+model SellerProfile {
+  id           String         @id @default(uuid())
+  userId       String         @unique
+  shopName     String
+  documentUrl  String
+  approved     Boolean        @default(false)
+  products     SellerProduct[]
+  orders       OrderItem[]
+  carts        Cart[]
+
+  user         User           @relation(fields: [userId], references: [id])
+}
+
+model CustomerProfile {
+  id       String  @id @default(uuid())
+  userId   String  @unique
+  address  String?
+  pincode  String?
+
+  user     User    @relation(fields: [userId], references: [id])
+}
+
+/// ----------------------------
+/// PRODUCT & CATEGORIES
+/// ----------------------------
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  products  Product[]
+}
+
+model Product {
+  id          String          @id @default(uuid())
+  name        String
+  description String
+  imageUrl    String?
+  categoryId  String
+  approved    Boolean         @default(false)
+
+  category    Category        @relation(fields: [categoryId], references: [id])
+  sellers     SellerProduct[]
+  wishlists   Wishlist[]
+  carts       Cart[]
+  orderItems  OrderItem[]
+}
+
+model SellerProduct {
+  id         String        @id @default(uuid())
+  sellerId   String
+  productId  String
+  price      Float
+  stock      Int
+  createdAt  DateTime      @default(now())
+
+  seller     SellerProfile @relation(fields: [sellerId], references: [id])
+  product    Product       @relation(fields: [productId], references: [id])
+
+  @@unique([productId, sellerId])
+}
+
+/// ----------------------------
+/// CART, WISHLIST, ORDERS
+/// ----------------------------
+model Cart {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+  sellerId  String
+  quantity  Int      @default(1)
+
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  seller    SellerProfile  @relation(fields: [sellerId], references: [id])
+}
+
+model Wishlist {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  userId     String
+  status     OrderStatus @default(PENDING)
+  total      Float
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  trackingId String?
+
+  user       User        @relation(fields: [userId], references: [id])
+  items      OrderItem[]
+  payment    Payment?
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model OrderItem {
+  id          String        @id @default(uuid())
+  orderId     String
+  productId   String
+  sellerId    String
+  quantity    Int
+  price       Float
+  edd         DateTime?
+
+  order       Order         @relation(fields: [orderId], references: [id])
+  product     Product       @relation(fields: [productId], references: [id])
+  seller      SellerProfile @relation(fields: [sellerId], references: [id])
+}
+
+/// ----------------------------
+/// PAYMENTS
+/// ----------------------------
+model Payment {
+  id         String        @id @default(uuid())
+  orderId    String        @unique
+  provider   String
+  amount     Float
+  status     PaymentStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+
+  order      Order         @relation(fields: [orderId], references: [id])
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
