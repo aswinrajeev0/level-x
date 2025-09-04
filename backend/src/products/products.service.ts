@@ -5,8 +5,12 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ProductsService {
     constructor(private prisma: PrismaService) { }
 
-    async fetchProducts(category?: string, minPrice?: string, maxPrice?: string) {
+    async fetchProducts(query?: string, category?: string, minPrice?: string, maxPrice?: string) {
         const filters: any = {};
+
+        if(query){
+            filters.name = {startsWith: query, mode: 'insensitive'};
+        }
 
         if (category) {
             filters.category = {

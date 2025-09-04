@@ -7,16 +7,25 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 type ProductLite = { id: string; title: string; slug: string; category: string }
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
+const fetcher = async (url: string): Promise<ProductLite[]> => {
+    const res = await fetch(url);
+    const products = await res.json();
+    return products.map((p: any) => ({
+        id: p.id,
+        title: p.name,
+        slug: p.id,
+        category: p.category?.name ?? "",
+    }));
+};
 
 export function SearchBar({ className }: { className?: string }) {
     const [q, setQ] = useState("")
-    const { data } = useSWR<{ products: ProductLite[] }>(
-        q.length > 0 ? `/api/products?query=${encodeURIComponent(q)}&limit=6` : null,
+    const { data } = useSWR<ProductLite[]>(
+        q.length > 0 ? `${process.env.NEXT_PUBLIC_BASE_URL}/products?query=${encodeURIComponent(q)}` : null,
         fetcher,
     )
     const router = useRouter()
-    const suggestions = useMemo(() => data?.products ?? [], [data])
+    const suggestions = useMemo(() => data ?? [], [data])
 
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {

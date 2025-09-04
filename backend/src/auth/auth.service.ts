@@ -18,27 +18,31 @@ export class AuthService {
         throw new UnauthorizedException('Invalid credentials');
     }
 
-    async login(user: {id: string, email: string, name: string}) {
+    async login(user: { id: string; email: string; name: string }) {
         const payload = { id: user.id, email: user.email };
+
         return {
             success: true,
-            access_token: this.jwtService.sign(payload),
-            ...user
+            access_token: this.jwtService.sign(payload, {
+                secret: process.env.JWT_SECRET,
+                // expiresIn: process.env.JWT_EXPIRES_IN,
+            }),
+            ...user,
         };
     }
 
     async verifyOtp(email: string, otp: number) {
         const MOCK_OTP = 987654;
         const existingUser = await this.usersService.findByEmail(email);
-        if(existingUser){
+        if (existingUser) {
             throw new ConflictException("User with this email already exists")
         }
 
-        if(otp === MOCK_OTP){
+        if (otp === MOCK_OTP) {
             return {
                 success: true
             }
-        }else{
+        } else {
             return {
                 success: false,
                 message: ""

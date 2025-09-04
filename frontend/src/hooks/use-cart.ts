@@ -36,11 +36,9 @@ export function useCart() {
         await refreshCart()
     }
 
-    const update = async (productId: string, quantity: number, sellerId?: string) => {
-        await apiClient.post(`/cart/update`, {
-            userId: user?.id,
-            productId,
-            sellerId,
+    const update = async (id: string, quantity: number) => {
+        await apiClient.put(`/cart/update`, {
+            id,
             quantity,
         })
 

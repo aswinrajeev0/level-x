@@ -1,14 +1,15 @@
 // CheckoutButton.tsx
 import { useState } from 'react';
 import { apiClient } from '../../api/api.client';
+import { Button } from './ui/button';
 
-export function CheckoutButton({ address }: { address: any }) {
+export function CheckoutButton() {
     const [loading, setLoading] = useState(false);
 
     async function handleCheckout() {
         setLoading(true);
         try {
-            const { data } = await apiClient.post('/checkout', { address });
+            const { data } = await apiClient.post('/checkout');
 
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY!,
@@ -36,8 +37,8 @@ export function CheckoutButton({ address }: { address: any }) {
     }
 
     return (
-        <button onClick={handleCheckout} disabled={loading}>
-            {loading ? 'Processing...' : 'Pay Now'}
-        </button>
+        <Button className="w-full" onClick={handleCheckout} disabled={loading}>
+            {loading ? "Processing..." : "Pay Now"}
+        </Button>
     );
 }

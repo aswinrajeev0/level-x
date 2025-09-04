@@ -60,10 +60,32 @@ export class CartService {
         return total;
     }
 
-    async addItem(cartData: {userId: string, sellerId: string, productId: string, quantity: number}){
-        await this.prisma.cart.create({
-            data: cartData
+    async addItem(cartData: { userId: string; sellerId: string; productId: string; quantity: number }) {
+        return await this.prisma.cart.create({
+            data: {
+                quantity: cartData.quantity,
+                user: { connect: { id: cartData.userId } },
+                product: { connect: { id: cartData.productId } },
+                seller: { connect: { id: cartData.sellerId } },
+            },
+            include: {
+                user: true,
+                product: true,
+                seller: true,
+            },
         })
+    }
+
+
+    async updateItem(data: { id: string, quantity: number }) {
+        await this.prisma.cart.update({
+            where: { id: data.id },
+            data: { quantity: data.quantity }
+        })
+    }
+
+    async removeItem(id: string) {
+        await this.prisma.cart.delete({ where: { id } })
     }
 
 }

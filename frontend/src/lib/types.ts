@@ -1,5 +1,6 @@
 export type Seller = {
     seller: {
+        id: string
         name: string
         shopName: string
     }
@@ -51,5 +52,16 @@ export type Order = {
     address: Address
     trackingId: string
     status: "created" | "paid" | "shipped" | "out_for_delivery" | "delivered"
-    placedAt: string
+    createdAt: Date
+}
+
+export type Category = {
+    id: string;
+    name: string;
+}
+
+export type WishlistItem = {
+    id: string;
+    productId: string;
+    product: Product
 }

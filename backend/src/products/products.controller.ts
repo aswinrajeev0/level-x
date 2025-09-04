@@ -8,10 +8,11 @@ export class ProductsController {
     @Get()
     async getProducts(
         @Query('category') category?: string,
-        @Query('minPrice') minPrice?: string,
-        @Query('maxPrice') maxPrice?: string,
+        @Query('min') min?: string,
+        @Query('max') max?: string,
+        @Query('query') query?: string
     ) {
-        return this.productsService.fetchProducts(category, minPrice, maxPrice);
+        return this.productsService.fetchProducts(query, category, min, max);
     }
 
     @Get(':id')

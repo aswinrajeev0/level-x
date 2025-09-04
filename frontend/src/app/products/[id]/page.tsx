@@ -11,7 +11,7 @@ import { Product } from "@/lib/types"
 export default function ProductDetailPage() {
     const params = useParams<{ id: string }>()
     const [product, setProduct] = useState<Product>()
-    const { toggle, has } = useWishlist()
+    const { remove, has } = useWishlist()
     const { add } = useCart()
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export default function ProductDetailPage() {
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <div className="font-semibold">₹ {s.price.toFixed(2)}</div>
-                                        <Button onClick={() => add(product.id, 1, s.id)}>Add to Cart</Button>
+                                        <Button onClick={() => add(product.id, 1, s.seller.id)}>Add to Cart</Button>
                                     </div>
                                 </li>
                             )
@@ -60,7 +60,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <Button variant={has(product.id) ? "secondary" : "outline"} onClick={() => toggle(product.id)}>
+                    <Button variant={has(product.id) ? "secondary" : "outline"} onClick={() => remove(product.id)}>
                         {has(product.id) ? "In Wishlist" : "Add to Wishlist"}
                     </Button>
                 </div>

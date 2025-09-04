@@ -9,7 +9,6 @@ export class CheckoutService {
 
     constructor(
         private prisma: PrismaService,
-        private cartService: CartService
     ) {
         this.razorpay = new Razorpay({
             key_id: process.env.RAZORPAY_KEY_ID!,
@@ -17,7 +16,7 @@ export class CheckoutService {
         });
     }
 
-    async checkout(userId: string, address: any) {
+    async checkout(userId: string) {
         const cartItems = await this.prisma.cart.findMany({
             where: { userId },
             include: {
@@ -49,6 +48,7 @@ export class CheckoutService {
         );
 
         const total = itemsWithPrice.reduce((sum, i) => sum + i.price * i.quantity, 0);
+        const trackingId = `TRK${Math.random().toString(36).slice(2, 8).toUpperCase()}`
 
         const order = await this.prisma.order.create({
             data: {
@@ -58,6 +58,7 @@ export class CheckoutService {
                 items: {
                     create: itemsWithPrice,
                 },
+                trackingId
             },
         });
 
@@ -110,5 +111,9 @@ export class CheckoutService {
         // await this.prisma.cart.deleteMany({ where: { userId: order.userId } });
 
         return order;
+    }
+
+    async track(id: string) {
+        return await this.prisma.order.findUnique({where: {id}})
     }
 }

@@ -16,8 +16,8 @@ export default function ProductsPage() {
 
     // Read query params safely
     const category = searchParams.get("category") ?? ""
-    const min = Number(searchParams.get("min") ?? 0)
-    const max = Number(searchParams.get("max") ?? 0)
+    const min = searchParams.get("min") ?? ""
+    const max = searchParams.get("max") ?? ""
 
     useEffect(() => {
         async function fetchProducts() {
@@ -93,7 +93,7 @@ export default function ProductsPage() {
                                     <div className="p-3">
                                         <div className="font-medium text-pretty">{p.name}</div>
                                         <div className="text-xs text-muted-foreground">{p.category?.name}</div>
-                                        <div className="text-sm mt-1">₹ {(lowest / 100).toFixed(2)}</div>
+                                        <div className="text-sm mt-1">₹ {(lowest).toFixed(2)}</div>
                                     </div>
                                 </Link>
                             )
