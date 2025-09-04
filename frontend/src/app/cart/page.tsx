@@ -26,6 +26,7 @@ export default function CartPage() {
                                             src={item.product.imageUrl || "/placeholder.svg?height=96&width=96&query=product%20image"}
                                             alt={item.product.name}
                                             className="w-24 h-24 rounded-md object-cover"
+                                            unoptimized
                                         />
                                         <div className="flex-1">
                                             <Link href={`/products/${item.productId}`} className="font-medium hover:underline">

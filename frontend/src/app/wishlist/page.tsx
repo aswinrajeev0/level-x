@@ -30,6 +30,7 @@ export default function WishlistPage() {
                                             src={item.product.imageUrl || "/placeholder.svg?height=180&width=240&query=product%20image"}
                                             alt={item.product.name}
                                             className="w-full"
+                                            unoptimized
                                         />
                                     </Link>
                                     <div className="p-3 space-y-2">

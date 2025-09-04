@@ -40,7 +40,7 @@ export default function HomePage() {
                     {products.map((p) => {
                         const lowest = Math.min(...p.sellers.map((s) => s.price))
                         return (<Link key={p.id} href={`/products/${p.id}`} className="rounded-md border hover:shadow-sm">
-                            <Image src={p.imageUrl || "/placeholder.svg"} alt={p.name} className="w-full rounded-t-md" />
+                            <Image src={p.imageUrl || "/placeholder.svg"} alt={p.name} className="w-full rounded-t-md" unoptimized />
                             <div className="p-3">
                                 <div className="font-medium">{p.name}</div>
                                 <div className="text-sm text-muted-foreground">{p.category.name}</div>

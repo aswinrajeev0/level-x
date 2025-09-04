@@ -90,6 +90,7 @@ export default function ProductsPage() {
                                         src={p.imageUrl || "/placeholder.svg?height=200&width=300&query=product%20image"}
                                         alt={p.name}
                                         className="w-full rounded-t-md"
+                                        unoptimized
                                     />
                                     <div className="p-3">
                                         <div className="font-medium text-pretty">{p.name}</div>

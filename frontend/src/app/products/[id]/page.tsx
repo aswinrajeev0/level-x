@@ -34,6 +34,7 @@ export default function ProductDetailPage() {
                     src={product.imageUrl || "/placeholder.svg?height=320&width=480&query=product%20image"}
                     alt={product.name}
                     className="w-full rounded-md"
+                    unoptimized
                 />
             </div>
 

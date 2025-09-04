@@ -33,6 +33,7 @@ export default function CheckoutPage() {
                                                         src={item.product.imageUrl}
                                                         alt={item.product?.name || "Product"}
                                                         className="w-full h-full object-cover"
+                                                        unoptimized
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm">
