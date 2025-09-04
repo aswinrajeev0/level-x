@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { CATEGORIES } from "@/lib/data"
 import { SearchBar } from "./search-bar"
 import { useCart } from "@/hooks/use-cart"
 import { useWishlist } from "@/hooks/use-wishlist"
@@ -37,7 +36,7 @@ export function Header() {
 
         checkAuthStatus()
         fetchCategories()
-    }, [])
+    }, [user])
 
     const handleLogout = async () => {
         try {

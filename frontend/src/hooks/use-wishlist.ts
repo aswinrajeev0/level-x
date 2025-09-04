@@ -1,14 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useLocalStorage } from "./use-local-storage"
 import { useSelector } from "react-redux"
 import { RootState } from "@/store"
 import { apiClient } from "../../api/api.client"
 import { WishlistItem } from "@/lib/types"
 
 export function useWishlist() {
-    const [ids, setIds] = useLocalStorage<string[]>("wishlist:v1", [])
     const [items, setItems] = useState<WishlistItem[]>([])
     const { user } = useSelector((state: RootState) => state.auth)
 
@@ -33,6 +31,6 @@ export function useWishlist() {
         await apiClient.delete(`/wishlist?id=${id}`);
         refreshWishlist()
     }
-    const has = (id: string) => ids.includes(id)
+    const has = (id: string) => items.some(item => item.id === id)
     return { items, remove, has }
 }

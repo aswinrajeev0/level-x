@@ -5,6 +5,7 @@ import { useWishlist } from "@/hooks/use-wishlist"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/hooks/use-cart"
 import ProtectedRoute from "@/components/ProtectedRoute"
+import Image from "next/image"
 
 export default function WishlistPage() {
     const { items, remove } = useWishlist()
@@ -25,7 +26,7 @@ export default function WishlistPage() {
                             return (
                                 <div key={item.id} className="border rounded-md overflow-hidden">
                                     <Link href={`/products/${item.id}`}>
-                                        <img
+                                        <Image
                                             src={item.product.imageUrl || "/placeholder.svg?height=180&width=240&query=product%20image"}
                                             alt={item.product.name}
                                             className="w-full"

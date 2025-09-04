@@ -8,7 +8,7 @@ import { apiClient } from "../../api/api.client"
 
 export function useCart() {
     const [items, setItems] = useState<CartItem[]>([])
-    const [loading, setLoading] = useState(false)
+    const [_loading, setLoading] = useState(false)
     const { user } = useSelector((state: RootState) => state.auth)
 
     useEffect(() => {

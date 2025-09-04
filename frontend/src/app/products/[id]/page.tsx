@@ -7,6 +7,7 @@ import { useCart } from "@/hooks/use-cart"
 import { Button } from "@/components/ui/button"
 import { apiClient } from "../../../../api/api.client"
 import { Product } from "@/lib/types"
+import Image from "next/image"
 
 export default function ProductDetailPage() {
     const params = useParams<{ id: string }>()
@@ -29,7 +30,7 @@ export default function ProductDetailPage() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="rounded-md border p-3">
-                <img
+                <Image
                     src={product.imageUrl || "/placeholder.svg?height=320&width=480&query=product%20image"}
                     alt={product.name}
                     className="w-full rounded-md"

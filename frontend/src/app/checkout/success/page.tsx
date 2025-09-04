@@ -1,16 +1,11 @@
 "use client"
 
-import { useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
-import { useOrders } from "@/hooks/use-orders"
-import { useCart } from "@/hooks/use-cart"
-import type { Order } from "@/lib/types"
 
 export default function CheckoutSuccessPage() {
     const params = useSearchParams()
     const router = useRouter()
     const orderId = params.get("orderId") || `order_${Date.now()}`
-    // const trackingId = `TRK${Math.random().toString(36).slice(2, 8).toUpperCase()}`
 
     return (
         <div className="rounded-md border p-6">

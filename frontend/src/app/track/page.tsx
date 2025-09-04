@@ -1,15 +1,12 @@
 "use client"
 
 import { useSearchParams } from "next/navigation"
-import useSWR from "swr"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import ProtectedRoute from "@/components/ProtectedRoute"
 import { apiClient } from "../../../api/api.client"
 import { Order } from "@/lib/types"
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export default function TrackPage() {
     const params = useSearchParams()

@@ -1,9 +1,9 @@
 "use client"
 
-import { useMemo } from "react"
 import { useCart } from "@/hooks/use-cart"
 import { CheckoutButton } from "@/components/checkout-button"
 import ProtectedRoute from "@/components/ProtectedRoute"
+import Image from "next/image"
 
 export default function CheckoutPage() {
     const { items, total } = useCart()
@@ -29,7 +29,7 @@ export default function CheckoutPage() {
                                             {/* Product Image */}
                                             <div className="w-20 h-20 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
                                                 {item.product?.imageUrl ? (
-                                                    <img
+                                                    <Image
                                                         src={item.product.imageUrl}
                                                         alt={item.product?.name || "Product"}
                                                         className="w-full h-full object-cover"

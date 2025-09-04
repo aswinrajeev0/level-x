@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { Product } from "@/lib/types"
 import { apiClient } from "../../../api/api.client"
 import { useSearchParams } from "next/navigation"
+import Image from "next/image"
 
 export default function ProductsPage() {
     const [products, setProducts] = useState<Product[]>([])
@@ -85,7 +86,7 @@ export default function ProductsPage() {
                             const lowest = Math.min(...p.sellers.map((s) => s.price))
                             return (
                                 <Link key={p.id} href={`/products/${p.id}`} className="rounded-md border hover:shadow-sm">
-                                    <img
+                                    <Image
                                         src={p.imageUrl || "/placeholder.svg?height=200&width=300&query=product%20image"}
                                         alt={p.name}
                                         className="w-full rounded-t-md"

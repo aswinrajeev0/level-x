@@ -5,6 +5,7 @@ import { useCart } from "@/hooks/use-cart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import ProtectedRoute from "@/components/ProtectedRoute"
+import Image from "next/image"
 
 export default function CartPage() {
     const { items, update, remove, total } = useCart()
@@ -21,7 +22,7 @@ export default function CartPage() {
                             <div className="space-y-3">
                                 {items.map(item => (
                                     <div key={`${item.id}-${item.sellerId ?? "lowest"}`} className="flex gap-4 border rounded-md p-3">
-                                        <img
+                                        <Image
                                             src={item.product.imageUrl || "/placeholder.svg?height=96&width=96&query=product%20image"}
                                             alt={item.product.name}
                                             className="w-24 h-24 rounded-md object-cover"
